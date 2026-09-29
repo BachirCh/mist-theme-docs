@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mist theme documentation</title>
+<meta name="description" content="Set up and customise the Mist Shopify theme: header, product cards, home sections, product page, collections, cart and global settings.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root { --ink: #111; --paper: #fff; --tint: #f2eeea; --sand: #e5ddd2; --muted: #5e5e5e; --line: #dcd6cf; --surface: #f5f5f5; }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: "DM Sans", system-ui, sans-serif; font-size: 16px; line-height: 1.65; color: var(--ink); background: var(--paper); }
+  a { color: inherit; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+  .skip { position: absolute; inset-inline-start: 1rem; inset-block-start: -4rem; background: var(--ink); color: #fff; padding: .6rem 1rem; border-radius: 999px; z-index: 10; }
+  .skip:focus { inset-block-start: 1rem; }
+  .hero { background: var(--tint); padding: 3.5rem 1.5rem 3rem; border-bottom: 1px solid var(--line); }
+  .hero__inner, .wrap { max-width: 1160px; margin: 0 auto; }
+  .brand { font-family: "Playfair Display", Georgia, serif; font-weight: 700; font-size: 1.15rem; letter-spacing: -.01em; }
+  .pill { display: inline-block; background: var(--ink); color: #fff; border-radius: 999px; padding: .25rem .9rem; font-size: .8rem; margin-inline-start: .5rem; }
+  .hero h1 { font-weight: 500; font-size: clamp(2.6rem, 7vw, 4.75rem); line-height: 1.02; letter-spacing: -.035em; margin: 1.25rem 0 1rem; max-width: 14ch; }
+  .hero p { max-width: 40rem; margin: 0; color: #333; font-size: 1.1rem; }
+  .wrap { display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: 3.5rem; padding: 3rem 1.5rem 5rem; }
+  nav.toc { position: sticky; top: 1.5rem; align-self: start; font-size: .93rem; max-height: calc(100vh - 3rem); overflow-y: auto; }
+  nav.toc p { margin: 0 0 .5rem; font-weight: 700; font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  nav.toc ol { list-style: none; padding: 0; margin: 0; display: grid; gap: .1rem; counter-reset: toc; }
+  nav.toc li { counter-increment: toc; }
+  nav.toc a { text-decoration: none; display: flex; gap: .7rem; padding: .3rem .6rem; border-radius: 999px; }
+  nav.toc a::before { content: counter(toc, decimal-leading-zero); color: var(--muted); font-size: .75rem; padding-top: .18rem; }
+  nav.toc a:hover { background: var(--tint); }
+  main section { padding-block-end: 2.75rem; margin-block-end: 2.75rem; border-block-end: 1px solid var(--line); }
+  main section:last-child { border: 0; }
+  .num { font-size: .8rem; font-weight: 700; letter-spacing: .08em; color: var(--muted); margin: 0; }
+  h2 { font-weight: 500; font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.1; letter-spacing: -.03em; margin: .25rem 0 1rem; }
+  h3 { font-weight: 700; font-size: 1.05rem; margin: 1.75rem 0 .4rem; }
+  p, li { max-width: 46rem; }
+  .muted { color: var(--muted); }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .94rem; }
+  th, td { text-align: start; padding: .7rem .9rem .7rem 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+  td:first-child { font-weight: 500; min-width: 9rem; }
+  code { font-family: ui-monospace, Menlo, monospace; font-size: .86em; background: var(--surface); border: 1px solid var(--line); padding: .05em .35em; border-radius: 6px; }
+  .note { background: var(--tint); border-radius: 16px; padding: 1rem 1.25rem; margin: 1.25rem 0; max-width: 46rem; }
+  .steps { counter-reset: s; list-style: none; padding: 0; }
+  .steps li { counter-increment: s; position: relative; padding-inline-start: 2.6rem; margin-bottom: .8rem; }
+  .steps li::before { content: counter(s); position: absolute; inset-inline-start: 0; top: .1rem; width: 1.7rem; height: 1.7rem; border-radius: 50%; background: var(--ink); color: #fff; font-size: .8rem; font-weight: 700; display: grid; place-items: center; }
+  .table-wrap { overflow-x: auto; }
+  ul.tight { padding-inline-start: 1.2rem; }
+  footer { background: var(--ink); color: #ddd; padding: 2.5rem 1.5rem; font-size: .9rem; }
+  footer .wrap { display: block; padding: 0; }
+  footer a { color: #fff; }
+  @media (max-width: 860px) { .wrap { grid-template-columns: 1fr; gap: 1.5rem; } nav.toc { position: static; max-height: none; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#start">Skip to content</a>
+<header class="hero">
+  <div class="hero__inner">
+    <span class="brand">Mist</span><span class="pill">Version 1.1.0</span>
+    <h1>Theme documentation</h1>
+    <p>A bright, rounded, conversion-minded Shopify theme with a slideshow home page, product tabs, quick view, a slide-in cart and a filterable collection grid. Every section is editable in the theme editor.</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="toc" aria-label="Contents">
+    <p>Contents</p>
+    <ol>
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#start">Install and first steps</a></li>
+      <li><a href="#styles">Presets and styles</a></li>
+      <li><a href="#header">Header and navigation</a></li>
+      <li><a href="#cards">Product cards</a></li>
+      <li><a href="#home">Home page sections</a></li>
+      <li><a href="#product">Product page</a></li>
+      <li><a href="#collections">Collections and search</a></li>
+      <li><a href="#cart">Cart</a></li>
+      <li><a href="#pages">Other pages</a></li>
+      <li><a href="#settings">Global theme settings</a></li>
+      <li><a href="#i18n">Localisation and RTL</a></li>
+      <li><a href="#quality">Performance and accessibility</a></li>
+      <li><a href="#support">Support</a></li>
+    </ol>
+  </nav>
+
+  <main id="main">
+    <section id="overview">
+      <p class="num">01</p>
+      <h2>Overview</h2>
+      <p>Mist is an Online Store 2.0 theme: every page is a JSON template made of sections you can add, remove and reorder in the theme editor. It is built on Shopify's Skeleton theme with original code, uses no third-party scripts, and ships as plain Liquid, CSS and a single deferred JavaScript file.</p>
+      <ul class="tight">
+        <li><strong>Home:</strong> looping slideshow, product tabs, collection carousel, bundle builder, press quotes, image with text, product carousel, scrolling text, shoppable gallery, reviews and FAQ.</li>
+        <li><strong>Shopping:</strong> product cards with quick add and quick view, AJAX filters and sorting, a cart drawer (or cart page) with a free-shipping bar, gift wrap and a shipping estimator.</li>
+        <li><strong>Pages:</strong> product, collection, collection list, search, blog, article, page (default, about, FAQ, contact, policies), cart, password, 404 and gift card templates.</li>
+      </ul>
+      <div class="note"><strong>Requirements.</strong> A Shopify store with the Online Store sales channel. Product ratings need a metafield (see <a href="#product">Product page</a>); product recommendations need Shopify's free Search &amp; Discovery app.</div>
+    </section>
+
+    <section id="start">
+      <p class="num">02</p>
+      <h2>Install and first steps</h2>
+      <ol class="steps">
+        <li>In Shopify admin go to <strong>Online Store → Themes → Add theme → Upload zip file</strong> and choose <code>mist-1.1.0.zip</code>.</li>
+        <li>Click <strong>Customize</strong>. A fresh install shows starter content and placeholders; nothing points at products you don't own.</li>
+        <li>Upload your logo under <strong>Theme settings → Logo and favicon</strong>. With no logo the store name is shown as a text logo in the font chosen under <em>Typography → Text logo</em>.</li>
+        <li>In the <strong>Header</strong> section choose your menu (the default is <code>main-menu</code>). Choose your footer menus in the <strong>Footer</strong> section.</li>
+        <li>On the home page click each section and pick your own collections, products and images. Sections with empty slots show placeholders until you do.</li>
+        <li>Create a <em>Gift wrap</em> product if you want the cart's gift-wrap option, then select it under <strong>Theme settings → Cart</strong>.</li>
+        <li>Check the mobile preview using the device toggle, then click <strong>Save</strong>.</li>
+      </ol>
+    </section>
+
+    <section id="styles">
+      <p class="num">03</p>
+      <h2>Presets and styles</h2>
+      <p>Mist ships with one preset, <strong>Mist</strong>. You change its look in <strong>Theme settings</strong>: colours, fonts, page width, spacing, corner radii and product-card options (see <a href="#settings">Global theme settings</a>). For example, set all four radii to 0 for a sharp, editorial look, or raise the button and input radii back to 40 px for the default pill shape.</p>
+      <p>Individual sections have their own colour and spacing settings (top and bottom padding, tinted backgrounds, slide colours), so you can vary the rhythm of the page without touching global settings.</p>
+    </section>
+
+    <section id="header">
+      <p class="num">04</p>
+      <h2>Header and navigation</h2>
+      <h3>Announcement bar</h3>
+      <p>Up to 8 <em>Message</em> blocks, each with text and an optional link. Settings: <em>Scroll messages</em> (a continuous marquee, or a static row when off), <em>Scroll duration</em>, background and text colours. The scrolling copy is hidden from screen readers and replaced by a plain list of the same messages.</p>
+      <h3>Header</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Setting</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td>Menu</td><td>The menu shown in the header (default <code>main-menu</code>).</td></tr>
+          <tr><td>Sticky header</td><td>Keeps the header at the top while scrolling.</td></tr>
+          <tr><td>Full width</td><td>Lets the header span the full window width instead of the page width.</td></tr>
+          <tr><td>Mega menu promotion</td><td>Image, heading and link shown beside the columns of a mega menu.</td></tr>
+        </tbody>
+      </table></div>
+      <p><strong>Two-level menus</strong> open as a dropdown. <strong>Three-level menus</strong> (a link with children that have their own children) open as a mega menu with a column per second-level link. Menus open on hover, on keyboard focus, and with the Down Arrow key; <kbd>Esc</kbd> closes them. On touch devices the first tap opens a submenu and the second follows the link.</p>
+      <h3>Icons, search and mobile</h3>
+      <p>The header shows search, account (when customer accounts are on) and cart icons; the cart icon carries an item count. Search opens a panel from the top with search suggestions (products, plus prices when enabled in <strong>Theme settings → Search</strong>). On phones the menu becomes a slide-in drawer where menu items with children expand as accordions and every group has a “View all” link.</p>
+    </section>
+
+    <section id="cards">
+      <p class="num">05</p>
+      <h2>Product cards</h2>
+      <p>A card is a soft rounded tile: image, optional product type or vendor, title, optional rating and price. Sale prices show the compare-at price struck through. Options live under <strong>Theme settings → Product cards</strong>.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Setting</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td>Image ratio</td><td>Square, near square (default), portrait or tall.</td></tr>
+          <tr><td>Image fit</td><td><em>Fit</em> shows the whole product; <em>Fill</em> crops to the frame.</td></tr>
+          <tr><td>Show product type / vendor / rating</td><td>Toggle the small line above the title and the star rating. The vendor replaces the type when both are on.</td></tr>
+          <tr><td>Second image on hover</td><td>Swaps to the product's second image on hover.</td></tr>
+          <tr><td>Enable quick add</td><td>Adds a quick-view button and a bottom button: <em>Add to cart</em> for single-variant products, <em>Choose options</em> (opens quick view) for the rest.</td></tr>
+          <tr><td>Badges</td><td>Sale (as a percentage or the word “Sale”), New and Selling fast are shown from tags you choose (defaults <code>new</code> and <code>selling-fast</code>). Sold-out products show a Sold out badge.</td></tr>
+        </tbody>
+      </table></div>
+      <p>Quick view opens the product in a dialog with gallery, variant picker, quantity and add to cart, without leaving the page.</p>
+    </section>
+
+    <section id="home">
+      <p class="num">06</p>
+      <h2>Home page sections</h2>
+      <p>These sections can be added to any page. Each has <em>Top padding</em> and <em>Bottom padding</em> settings unless noted.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Section</th><th>Blocks and settings</th></tr></thead>
+        <tbody>
+          <tr><td>Slideshow</td><td>Up to 6 <em>Slide</em> blocks, each with image, separate mobile image, layout (background, split or text only), content position, subheading, heading, text, button and colours. Settings: accessible name, desktop and mobile height, neighbour peek, first slide, auto-rotate and interval. The slides loop continuously.</td></tr>
+          <tr><td>Product tabs</td><td>Up to 5 <em>Tab</em> blocks, each a title and a collection. Settings: products per tab, columns, “view all” link, tinted background.</td></tr>
+          <tr><td>Collection carousel</td><td>Up to 12 <em>Collection</em> blocks (collection, optional image and title). Intro subheading, heading and text sit beside the carousel.</td></tr>
+          <tr><td>Shop the bundle</td><td>An image with numbered hotspots and a list of up to 5 <em>Product</em> blocks (product plus hotspot X and Y position). One button adds all listed products to the cart. Image can be on the left or right.</td></tr>
+          <tr><td>Press</td><td>Up to 4 <em>Quote</em> blocks with publication logo (or name), logo width and quote.</td></tr>
+          <tr><td>Image with text</td><td>Image and a coloured panel with subheading, heading, text and button. Settings: image side, minimum height, alignment, panel colours.</td></tr>
+          <tr><td>Product carousel</td><td>Products from one collection as wide cards with a button. Settings: collection, maximum products, button label.</td></tr>
+          <tr><td>Scrolling text</td><td>Up to 10 <em>Item</em> blocks (text and optional image) in a looping marquee. Settings: loop duration, borders.</td></tr>
+          <tr><td>Shoppable gallery</td><td>Up to 5 <em>Tab</em> blocks, each with title, text and four images, each of which can be tagged with a product.</td></tr>
+          <tr><td>Reviews carousel</td><td>Up to 12 <em>Review</em> blocks: image, author, verified-buyer label, star rating, review text and the product reviewed.</td></tr>
+          <tr><td>FAQ with image</td><td>Up to 12 <em>Question</em> blocks beside a centre image, with heading, text and button. Option to open the first question.</td></tr>
+          <tr><td>FAQ</td><td>Up to 30 blocks: <em>Group heading</em> and <em>Question</em>. Optional FAQ structured data for search engines.</td></tr>
+          <tr><td>Icons with text</td><td>Up to 6 <em>Feature</em> blocks with a built-in icon (or your own image), title and text. Optional heading and divider.</td></tr>
+          <tr><td>Product recommendations</td><td>Related or complementary products from Shopify Search &amp; Discovery, with an optional fallback collection. Hides itself when there is nothing to show.</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section id="product">
+      <p class="num">07</p>
+      <h2>Product page</h2>
+      <p>The <em>Product information</em> section is block-based. Reorder, remove or repeat blocks in the editor; app blocks can be added between them.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Block</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Text</td><td>Custom text, or the product's vendor or type. Muted colour option.</td></tr>
+          <tr><td>Title, Badges</td><td>Product title; sale, new, selling-fast and sold-out badges.</td></tr>
+          <tr><td>Rating</td><td>Stars from the <code>reviews.rating</code> metafield (type: rating), with the count from <code>reviews.rating_count</code> (integer). Nothing is shown when the metafield is empty.</td></tr>
+          <tr><td>Price</td><td>Price, compare-at price and an optional tax and shipping note.</td></tr>
+          <tr><td>Description</td><td>Product description with an optional word limit.</td></tr>
+          <tr><td>Stock status</td><td>In stock / low stock / sold out; optional quantity and low-stock threshold.</td></tr>
+          <tr><td>Variant picker</td><td>Options as buttons; changing one updates the price, gallery image and page URL without reloading.</td></tr>
+          <tr><td>Buy buttons</td><td>Quantity selector, Add to cart and the dynamic checkout button (both optional in the block).</td></tr>
+          <tr><td>Perks</td><td>Three icon-and-text lines, for example shipping and returns.</td></tr>
+          <tr><td>Pickup availability, SKU</td><td>Store pickup information and the SKU of the selected variant.</td></tr>
+          <tr><td>Collapsible tab</td><td>Accordion with rich text, the product description, or the content of a page. Can open by default.</td></tr>
+          <tr><td>Share</td><td>Copy-link button and an optional “Ask a question” link.</td></tr>
+          <tr><td>Custom Liquid, App</td><td>Your own Liquid, or any app block.</td></tr>
+        </tbody>
+      </table></div>
+      <p>Section settings: breadcrumb on or off, <em>Desktop gallery</em> layout (grid, columns or stack), and whether the product information stays in view while scrolling. Images open in a full-screen viewer; on phones the gallery is a swipeable strip with dots. The default template also includes an icons section, an FAQ and product recommendations below the product.</p>
+    </section>
+
+    <section id="collections">
+      <p class="num">08</p>
+      <h2>Collections and search</h2>
+      <p>The <em>Product grid</em> section shows the collection title, description, product count, sorting and filtering. Filters come from Shopify's <strong>Search &amp; Discovery</strong> app.</p>
+      <ul class="tight">
+        <li><strong>Filtering:</strong> tick availability and other filters or set a price range. Results update without a page reload, the URL stays shareable, and removable chips show what is active. On phones (and optionally on desktop) filters open in a drawer; choose <em>Sidebar</em> or <em>Drawer</em> under <em>Desktop filter layout</em>.</li>
+        <li><strong>Sorting:</strong> the sort options defined for the collection.</li>
+        <li><strong>Grid:</strong> products per page (8 to 48), columns on desktop (2 to 5), and 1 or 2 columns on mobile. Pagination links update the grid without a full reload.</li>
+        <li><strong>Empty results:</strong> a message and a “clear all” button appear when the filters match nothing.</li>
+      </ul>
+      <p><strong>Search results</strong> use the same product cards, with results per page, columns and filters. A page for “no results” explains what to try. <strong>Collections list</strong> lets you pick collections, sort them, choose columns and hide empty ones.</p>
+    </section>
+
+    <section id="cart">
+      <p class="num">09</p>
+      <h2>Cart</h2>
+      <p>Choose <em>Drawer</em> or <em>Page</em> under <strong>Theme settings → Cart</strong>. In drawer mode, adding an item opens the drawer; the cart icon opens it at any time. The drawer and the cart page share these features:</p>
+      <ul class="tight">
+        <li><strong>Free-shipping progress bar:</strong> set a threshold in your store's currency; 0 hides the bar.</li>
+        <li><strong>Quantity controls and remove</strong>, updated without reloading.</li>
+        <li><strong>Cart page extras:</strong> order note, gift wrap (adds your chosen <em>Gift wrap product</em> as a line; unticking removes it), a shipping estimator (country, province and postcode) and accelerated checkout buttons.</li>
+        <li><strong>Empty cart:</strong> a message with a “Continue shopping” button, plus recommendations when a fallback collection is set.</li>
+      </ul>
+    </section>
+
+    <section id="pages">
+      <p class="num">10</p>
+      <h2>Other pages</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Template</th><th>What it contains</th></tr></thead>
+        <tbody>
+          <tr><td>page (default)</td><td>Title and rich content from the page.</td></tr>
+          <tr><td>page.about</td><td>Page intro, an image-with-text panel and an icons row.</td></tr>
+          <tr><td>page.faq</td><td>Grouped questions in accordions (the FAQ section).</td></tr>
+          <tr><td>page.contact</td><td>Heading, up to 4 contact details (email, hours, address, question) and the contact form with name, email, phone, product and message fields.</td></tr>
+          <tr><td>page.policies</td><td>Simple text page for shipping, returns and terms.</td></tr>
+          <tr><td>blog</td><td>Article grid with tag filter chips, excerpts, posts per page and columns.</td></tr>
+          <tr><td>article</td><td>Breadcrumb, title, author and date, featured image, content, tags, copy-link share button and a product tabs section below the post.</td></tr>
+          <tr><td>404</td><td>Large 404 mark, a search field and a link back to shopping.</td></tr>
+          <tr><td>password</td><td>Storefront password page with heading, optional image and a newsletter form.</td></tr>
+          <tr><td>gift_card</td><td>Balance, code, expiry, QR code and add-to-wallet link.</td></tr>
+        </tbody>
+      </table></div>
+      <p>To use a template, choose it in the page's <em>Theme template</em> field in the admin (for example <em>page.faq</em>). Customer account pages use Shopify's customer accounts, which are not part of the theme.</p>
+    </section>
+
+    <section id="settings">
+      <p class="num">11</p>
+      <h2>Global theme settings</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Group</th><th>Settings</th></tr></thead>
+        <tbody>
+          <tr><td>Logo and favicon</td><td>Logo image, logo width (60 to 300 px), favicon.</td></tr>
+          <tr><td>Colors</td><td>Background, text, secondary text, borders; card background; tinted section background; primary and secondary button and text colours; sale price, in-stock and rating-star colours; sale, new, selling-fast and sold-out badge colours.</td></tr>
+          <tr><td>Typography</td><td>Heading font, heading size (80 to 130 %), heading letter spacing (normal, tight, tighter), body font, body size (90 to 120 %), and the text-logo font.</td></tr>
+          <tr><td>Layout</td><td>Page width (narrow 1200, standard 1320, wide 1480 px), side margin, space between sections.</td></tr>
+          <tr><td>Shapes</td><td>Corner radius for cards, banners, buttons and inputs.</td></tr>
+          <tr><td>Product cards</td><td>Image ratio and fit, product type, vendor, rating, second image on hover, quick add, sale-badge format, New and Selling fast tags.</td></tr>
+          <tr><td>Cart</td><td>Drawer or page, free-shipping threshold, gift wrap product, order note, shipping estimator.</td></tr>
+          <tr><td>Social media</td><td>Facebook, X, Instagram, TikTok, Pinterest and YouTube links (shown in the footer when filled in).</td></tr>
+          <tr><td>Search</td><td>Search suggestions on or off; show prices in suggestions.</td></tr>
+          <tr><td>Animation</td><td>Reveal sections on scroll; zoom images on hover.</td></tr>
+        </tbody>
+      </table></div>
+      <p>The <strong>Footer</strong> section has blocks for a newsletter sign-up, link menus and a text block with a link, plus a policy menu and switches for the country and language selectors and payment icons.</p>
+    </section>
+
+    <section id="i18n">
+      <p class="num">12</p>
+      <h2>Localisation and RTL</h2>
+      <p>Every customer-facing string is in <code>locales/en.default.json</code>. To translate, add languages under <strong>Settings → Languages</strong> and use <strong>Edit default theme content / Edit languages</strong> in the theme editor. The footer shows country and language selectors when your store sells in more than one.</p>
+      <p>The theme switches to right-to-left automatically for Arabic, Hebrew, Persian and Urdu. Spacing, positioning and borders use logical CSS properties, and arrow icons, carousels and drawers mirror. Text you type into a section is treated as bidirectional so mixed-language names display correctly.</p>
+    </section>
+
+    <section id="quality">
+      <p class="num">13</p>
+      <h2>Performance and accessibility</h2>
+      <ul class="tight">
+        <li>No third-party scripts or libraries; one deferred JavaScript file and one stylesheet, with fonts loaded from Shopify's font service.</li>
+        <li>Images use responsive <code>srcset</code>, lazy loading below the fold, and the first slide or product image loads eagerly with high priority.</li>
+        <li>Recommendations, quick view and cart updates load through Shopify's Section Rendering API, not full page loads.</li>
+        <li>A skip-to-content link, one <code>h1</code> per page, labelled form fields, visible focus outlines, focus trapped in dialogs and returned on close, <kbd>Esc</kbd> to close drawers, and live regions for cart and search updates.</li>
+        <li>Scroll-reveal animations and marquees are switched off for visitors who prefer reduced motion.</li>
+        <li>Default colours meet WCAG AA contrast; check your own colour changes with a contrast checker.</li>
+      </ul>
+    </section>
+
+    <section id="support">
+      <p class="num">14</p>
+      <h2>Support</h2>
+      <p>For help, contact the seller you bought the theme from and include your store URL, the page affected and a screenshot. Please mention the theme version (1.1.0 for this release).</p>
+    </section>
+  </main>
+</div>
+<footer><div class="wrap">Mist theme, version 1.1.0. Built on Shopify's Skeleton theme (MIT-style licence notice in <code style="background:#222;border-color:#444;color:#fff">layout/theme.liquid</code>).</div></footer>
+</body>
+</html>
